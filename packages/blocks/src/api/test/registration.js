@@ -41,7 +41,7 @@ import { DEPRECATED_ENTRY_KEYS } from '../constants';
 describe( 'blocks', () => {
 	const defaultBlockSettings = {
 		save: noop,
-		category: 'common',
+		category: 'text',
 		title: 'block title',
 	};
 
@@ -126,7 +126,7 @@ describe( 'blocks', () => {
 				attributes: {},
 				keywords: [],
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 			} );
 		} );
@@ -160,7 +160,7 @@ describe( 'blocks', () => {
 			const blockType = {
 					save: noop,
 					edit: 'not-a-function',
-					category: 'common',
+					category: 'text',
 					title: 'block title',
 				},
 				block = registerBlockType(
@@ -209,7 +209,7 @@ describe( 'blocks', () => {
 			const blockType = {
 					settingName: 'settingValue',
 					save: noop,
-					category: 'common',
+					category: 'text',
 				},
 				block = registerBlockType(
 					'my-plugin/fancy-block-9',
@@ -225,7 +225,7 @@ describe( 'blocks', () => {
 			const blockType = {
 					settingName: 'settingValue',
 					save: noop,
-					category: 'common',
+					category: 'text',
 					title: '',
 				},
 				block = registerBlockType(
@@ -242,7 +242,7 @@ describe( 'blocks', () => {
 			const blockType = {
 					settingName: 'settingValue',
 					save: noop,
-					category: 'common',
+					category: 'text',
 					title: 12345,
 				},
 				block = registerBlockType(
@@ -258,13 +258,13 @@ describe( 'blocks', () => {
 		it( 'should assign default settings', () => {
 			registerBlockType( 'core/test-block-with-defaults', {
 				title: 'block title',
-				category: 'common',
+				category: 'text',
 			} );
 
 			expect( getBlockType( 'core/test-block-with-defaults' ) ).toEqual( {
 				name: 'core/test-block-with-defaults',
 				title: 'block title',
-				category: 'common',
+				category: 'text',
 				icon: {
 					src: blockIcon,
 				},
@@ -283,7 +283,7 @@ describe( 'blocks', () => {
 			const blockType = {
 				settingName: 'settingValue',
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 			};
 			registerBlockType( 'core/test-block-with-attributes', blockType );
@@ -292,7 +292,7 @@ describe( 'blocks', () => {
 					name: 'core/test-block-with-attributes',
 					settingName: 'settingValue',
 					save: noop,
-					category: 'common',
+					category: 'text',
 					title: 'block title',
 					icon: {
 						src: blockIcon,
@@ -310,7 +310,7 @@ describe( 'blocks', () => {
 		it( 'should validate the icon', () => {
 			const blockType = {
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 				icon: { chicken: 'ribs' },
 			};
@@ -325,7 +325,7 @@ describe( 'blocks', () => {
 		it( 'should normalize the icon containing an element', () => {
 			const blockType = {
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 				icon: (
 					<svg width="20" height="20" viewBox="0 0 20 20">
@@ -349,7 +349,7 @@ describe( 'blocks', () => {
 			).toEqual( {
 				name: 'core/test-block-icon-normalize-element',
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 				icon: {
 					src: (
@@ -373,7 +373,7 @@ describe( 'blocks', () => {
 		it( 'should normalize the icon containing a string', () => {
 			const blockType = {
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 				icon: 'foo',
 			};
@@ -386,7 +386,7 @@ describe( 'blocks', () => {
 			).toEqual( {
 				name: 'core/test-block-icon-normalize-string',
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 				icon: {
 					src: 'foo',
@@ -413,7 +413,7 @@ describe( 'blocks', () => {
 			};
 			const blockType = {
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 				icon: MyTestIcon,
 			};
@@ -426,7 +426,7 @@ describe( 'blocks', () => {
 			).toEqual( {
 				name: 'core/test-block-icon-normalize-function',
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 				icon: {
 					src: MyTestIcon,
@@ -439,7 +439,7 @@ describe( 'blocks', () => {
 		it( 'should correctly register an icon with background and a custom svg', () => {
 			const blockType = {
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 				icon: {
 					background: '#f00',
@@ -466,7 +466,7 @@ describe( 'blocks', () => {
 			).toEqual( {
 				name: 'core/test-block-icon-normalize-background',
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 				icon: {
 					background: '#f00',
@@ -494,7 +494,7 @@ describe( 'blocks', () => {
 			const blockType = {
 				settingName: 'settingValue',
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 			};
 			registerBlockType( 'core/test-block-with-settings', blockType );
@@ -503,7 +503,7 @@ describe( 'blocks', () => {
 				name: 'core/test-block-with-settings',
 				settingName: 'settingValue',
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 				icon: {
 					src: blockIcon,
@@ -699,7 +699,7 @@ describe( 'blocks', () => {
 				{
 					name: 'core/test-block',
 					save: noop,
-					category: 'common',
+					category: 'text',
 					title: 'block title',
 					icon: {
 						src: blockIcon,
@@ -714,7 +714,7 @@ describe( 'blocks', () => {
 			expect( oldBlock ).toEqual( {
 				name: 'core/test-block',
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 				icon: {
 					src: blockIcon,
@@ -790,7 +790,7 @@ describe( 'blocks', () => {
 			expect( getBlockType( 'core/test-block' ) ).toEqual( {
 				name: 'core/test-block',
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 				icon: {
 					src: blockIcon,
@@ -804,7 +804,7 @@ describe( 'blocks', () => {
 			const blockType = {
 				settingName: 'settingValue',
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 			};
 			registerBlockType( 'core/test-block-with-settings', blockType );
@@ -812,7 +812,7 @@ describe( 'blocks', () => {
 				name: 'core/test-block-with-settings',
 				settingName: 'settingValue',
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 				icon: {
 					src: blockIcon,
@@ -833,7 +833,7 @@ describe( 'blocks', () => {
 			const blockType = {
 				settingName: 'settingValue',
 				save: noop,
-				category: 'common',
+				category: 'text',
 				title: 'block title',
 			};
 			registerBlockType( 'core/test-block-with-settings', blockType );
@@ -841,7 +841,7 @@ describe( 'blocks', () => {
 				{
 					name: 'core/test-block',
 					save: noop,
-					category: 'common',
+					category: 'text',
 					title: 'block title',
 					icon: {
 						src: blockIcon,
@@ -854,7 +854,7 @@ describe( 'blocks', () => {
 					name: 'core/test-block-with-settings',
 					settingName: 'settingValue',
 					save: noop,
-					category: 'common',
+					category: 'text',
 					title: 'block title',
 					icon: {
 						src: blockIcon,

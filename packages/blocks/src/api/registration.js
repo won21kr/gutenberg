@@ -3,7 +3,7 @@
 /**
  * External dependencies
  */
-import { get, isFunction, isPlainObject, omit, pick, some } from 'lodash';
+import { get, omit, pick, isFunction, isPlainObject } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -207,17 +207,20 @@ export function registerBlockType( name, settings ) {
 		console.error( 'The block "' + name + '" must have a category.' );
 		return;
 	}
-	if (
-		'category' in settings &&
-		! some( select( 'core/blocks' ).getCategories(), {
-			slug: settings.category,
-		} )
-	) {
+
+	const category = select( 'core/blocks' ).getCategory( settings.category );
+	if ( ! category ) {
 		console.error(
 			'The block "' + name + '" must have a registered category.'
 		);
 		return;
 	}
+
+	// `getCategory` handles canonicalization of a category, which may yield a
+	// different slug from the provided settings. Ensure that the settings value
+	// references the normalized value.
+	settings.category = category.slug;
+
 	if ( ! ( 'title' in settings ) || settings.title === '' ) {
 		console.error( 'The block "' + name + '" must have a title.' );
 		return;
