@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __experimentalBlockNavigationList } from '@wordpress/block-editor';
+import { __experimentalBlockNavigationGrid } from '@wordpress/block-editor';
 import { useSelect, useDispatch } from '@wordpress/data';
 
 export default function BlockNavigationList( { clientId } ) {
@@ -22,12 +22,13 @@ export default function BlockNavigationList( { clientId } ) {
 	const { selectBlock } = useDispatch( 'core/block-editor' );
 
 	return (
-		<__experimentalBlockNavigationList
+		<__experimentalBlockNavigationGrid
 			blocks={ [ block ] }
 			selectedBlockClientId={ selectedBlockClientId }
 			selectBlock={ selectBlock }
 			showNestedBlocks
 			showAppender
+			showBlockMovers
 		/>
 	);
 }

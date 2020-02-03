@@ -25,6 +25,33 @@ $tree-item-height: 36px;
 	width: calc(100% - 0.8em);
 }
 
+.block-editor-block-navigation-item__block,
+.block-editor-block-navigation-item__appender {
+	display: flex;
+	align-items: center;
+	border-radius: 4px;
+
+	&.is-selected,
+	&.is-selected:focus {
+		color: $dark-gray-700;
+		background: $light-gray-300;
+	}
+
+	&:hover {
+		@include menu-style__hover;
+	}
+
+	.block-editor-block-mover {
+		display: flex;
+		margin: 5px;
+	}
+}
+
+.block-editor-block-navigation-item__appender {
+	width: $icon-button-size;
+}
+
+// Styles for nested block navigation lists.
 .block-editor-block-navigation__list .block-editor-block-navigation__list {
 	margin-top: 2px;
 	border-left: $tree-border-width solid $light-gray-900;
@@ -34,12 +61,14 @@ $tree-item-height: 36px;
 		margin-left: 1.5em;
 	}
 
-	.block-editor-block-navigation__item {
+	.block-editor-block-navigation-item__block,
+	.block-editor-block-navigation-item__appender {
 		position: relative;
+		margin-left: 0.5em;
 
 		&::before {
 			position: absolute;
-			left: 0;
+			left: -0.5em;
 			background: $light-gray-900;
 			width: 0.5em;
 			height: $tree-border-width;
@@ -68,7 +97,7 @@ $tree-item-height: 36px;
 	}
 }
 
-.block-editor-block-navigation__item-button {
+.block-editor-block-navigation-item__button {
 	display: flex;
 	align-items: center;
 	width: 100%;
@@ -92,4 +121,18 @@ $tree-item-height: 36px;
 
 .components-popover.block-editor-block-navigation__popover {
 	z-index: z-index(".components-popover.block-editor-block-navigation__popover");
+}
+
+.block-editor-block-navigation-item__movers {
+	display: flex;
+	flex-direction: row;
+
+	// Make opacity zero for 'edit-post__fade-in-animation'.
+	opacity: 0;
+	@include reduce-motion("transition");
+
+	&.is-visible {
+		opacity: 1;
+		@include edit-post__fade-in-animation;
+	}
 }

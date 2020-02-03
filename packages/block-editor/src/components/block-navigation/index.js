@@ -7,14 +7,13 @@ import { noop } from 'lodash';
  * WordPress dependencies
  */
 import { withSelect, withDispatch } from '@wordpress/data';
-import { NavigableMenu } from '@wordpress/components';
 import { compose } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
-import BlockNavigationList from './list';
+import BlockNavigationGrid from './grid';
 
 function BlockNavigation( {
 	rootBlock,
@@ -32,15 +31,12 @@ function BlockNavigation( {
 			( rootBlock.innerBlocks && rootBlock.innerBlocks.length !== 0 ) );
 
 	return (
-		<NavigableMenu
-			role="presentation"
-			className="block-editor-block-navigation__container"
-		>
+		<div className="block-editor-block-navigation__container">
 			<p className="block-editor-block-navigation__label">
 				{ __( 'Block navigation' ) }
 			</p>
 			{ hasHierarchy && (
-				<BlockNavigationList
+				<BlockNavigationGrid
 					blocks={ [ rootBlock ] }
 					selectedBlockClientId={ selectedBlockClientId }
 					selectBlock={ selectBlock }
@@ -48,13 +44,13 @@ function BlockNavigation( {
 				/>
 			) }
 			{ ! hasHierarchy && (
-				<BlockNavigationList
+				<BlockNavigationGrid
 					blocks={ rootBlocks }
 					selectedBlockClientId={ selectedBlockClientId }
 					selectBlock={ selectBlock }
 				/>
 			) }
-		</NavigableMenu>
+		</div>
 	);
 }
 

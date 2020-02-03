@@ -3,7 +3,8 @@
 	flex-direction: row;
 	border-right: $border-width solid $light-gray-500;
 
-	.block-editor-block-mover__control {
+	.block-editor-block-mover-button,
+	.block-editor-block-mover__drag-handle {
 		width: $button-size;
 		height: $button-size;
 		border-radius: $radius-round-rectangle;
@@ -22,7 +23,8 @@
 		display: flex;
 		margin-right: auto;
 
-		.block-editor-block-mover__control {
+		.block-editor-block-mover-button,
+		.block-editor-block-mover__drag-handle {
 			float: left;
 		}
 	}

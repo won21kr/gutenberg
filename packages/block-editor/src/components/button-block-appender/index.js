@@ -6,7 +6,8 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import { Button, Tooltip, VisuallyHidden } from '@wordpress/components';
+import { Button, Tooltip } from '@wordpress/components';
+import { forwardRef } from '@wordpress/element';
 import { _x, sprintf } from '@wordpress/i18n';
 import { Icon, create } from '@wordpress/icons';
 
@@ -15,11 +16,15 @@ import { Icon, create } from '@wordpress/icons';
  */
 import Inserter from '../inserter';
 
-function ButtonBlockAppender( {
-	rootClientId,
-	className,
-	__experimentalSelectBlockOnInsert: selectBlockOnInsert,
-} ) {
+function ButtonBlockAppender(
+	{
+		rootClientId,
+		className,
+		__experimentalSelectBlockOnInsert: selectBlockOnInsert,
+		...props
+	},
+	ref
+) {
 	return (
 		<Inserter
 			position="bottom center"
@@ -49,6 +54,7 @@ function ButtonBlockAppender( {
 				return (
 					<Tooltip text={ label }>
 						<Button
+							ref={ ref }
 							className={ classnames(
 								className,
 								'block-editor-button-block-appender'
@@ -62,6 +68,7 @@ function ButtonBlockAppender( {
 							}
 							disabled={ disabled }
 							label={ label }
+							{ ...props }
 						>
 							<VisuallyHidden as="span">{ label }</VisuallyHidden>
 							<Icon icon={ create } />
@@ -77,4 +84,4 @@ function ButtonBlockAppender( {
 /**
  * @see https://github.com/WordPress/gutenberg/blob/master/packages/block-editor/src/components/button-block-appender/README.md
  */
-export default ButtonBlockAppender;
+export default forwardRef( ButtonBlockAppender );
