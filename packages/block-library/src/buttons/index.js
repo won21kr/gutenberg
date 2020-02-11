@@ -28,6 +28,10 @@ export const settings = {
 		alignWide: false,
 		lightBlockWrapper: true,
 	},
+	styles: [
+		{ name: 'horizontal', label: __( 'Horizontal' ), isDefault: true },
+		{ name: 'vertical', label: __( 'Vertical' ) },
+	],
 	transforms,
 	edit,
 	save,
