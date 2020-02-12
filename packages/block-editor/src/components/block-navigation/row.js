@@ -34,7 +34,7 @@ export default function BlockNavigationRow( {
 	isSelected,
 	position,
 	level,
-	siblingCount,
+	rowCount,
 	showBlockMovers,
 } ) {
 	const [ isHovered, setIsHovered ] = useState( false );
@@ -55,10 +55,12 @@ export default function BlockNavigationRow( {
 		animateOnChange
 	);
 
-	const hasSiblings = siblingCount > 1;
+	// Subtract 1 from rowCount, as it includes the block appender.
+	const hasSiblings = rowCount - 1 > 1;
+	const hasRenderedMovers = showBlockMovers && hasSiblings;
 	const hasVisibleMovers = isHovered || isSelected || isFocused;
-	const moverClassName = classnames(
-		'block-editor-block-navigation-row__mover-button',
+	const moverCellClassName = classnames(
+		'block-editor-block-navigation-row__mover-cell',
 		{ 'is-visible': hasVisibleMovers }
 	);
 
@@ -75,9 +77,13 @@ export default function BlockNavigationRow( {
 			onBlur={ () => setIsFocused( false ) }
 			level={ level }
 			positionInSet={ position }
-			setSize={ siblingCount }
+			setSize={ rowCount }
 		>
-			<TreeGridCell>
+			<TreeGridCell
+				className="block-editor-block-navigation-row__select-cell"
+				style={ { paddingLeft: `${ ( level - 1 ) * 16 }px` } }
+				colspan={ hasRenderedMovers ? undefined : 3 }
+			>
 				{ ( props ) => (
 					<Button
 						className="block-editor-block-navigation-row__select-button"
@@ -94,24 +100,22 @@ export default function BlockNavigationRow( {
 					</Button>
 				) }
 			</TreeGridCell>
-			{ showBlockMovers && hasSiblings && (
+			{ hasRenderedMovers && (
 				<>
-					<TreeGridCell>
+					<TreeGridCell className={ moverCellClassName }>
 						{ ( props ) => (
 							<MoveUpButton
 								__experimentalOrientation="vertical"
 								clientIds={ [ clientId ] }
-								className={ moverClassName }
 								{ ...props }
 							/>
 						) }
 					</TreeGridCell>
-					<TreeGridCell>
+					<TreeGridCell className={ moverCellClassName }>
 						{ ( props ) => (
 							<MoveDownButton
 								__experimentalOrientation="vertical"
 								clientIds={ [ clientId ] }
-								className={ moverClassName }
 								{ ...props }
 							/>
 						) }

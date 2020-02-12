@@ -29,6 +29,8 @@ function BlockNavigationRows( props ) {
 
 	const isTreeRoot = ! parentBlockClientId;
 	const filteredBlocks = compact( blocks );
+	// Add +1 to the siblingCount to take the block appender into account.
+	const rowCount = filteredBlocks.length + 1;
 	const hasAppender =
 		showAppender && filteredBlocks.length > 0 && ! isTreeRoot;
 
@@ -47,7 +49,7 @@ function BlockNavigationRows( props ) {
 							isSelected={ selectedBlockClientId === clientId }
 							level={ level }
 							position={ index + 1 }
-							siblingCount={ filteredBlocks.length }
+							rowCount={ rowCount }
 							showBlockMovers={ showBlockMovers }
 						/>
 						{ hasNestedBlocks && (
@@ -68,6 +70,9 @@ function BlockNavigationRows( props ) {
 			{ hasAppender && (
 				<BlockNavigationAppenderRow
 					parentBlockClientId={ parentBlockClientId }
+					position={ rowCount }
+					rowCount={ rowCount }
+					level={ level }
 				/>
 			) }
 		</>

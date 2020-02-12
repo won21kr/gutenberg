@@ -10,8 +10,7 @@ $tree-item-height: 36px;
 	color: $dark-gray-300;
 }
 
-.block-editor-block-navigation__list,
-.block-editor-block-navigation__paragraph {
+.block-editor-block-navigation__list {
 	padding: 0;
 	margin: 0;
 }
@@ -25,57 +24,31 @@ $tree-item-height: 36px;
 	width: calc(100% - 0.8em);
 }
 
-.block-editor-block-navigation-item__block,
-.block-editor-block-navigation-item__appender {
-	display: flex;
-	align-items: center;
-	border-radius: 4px;
+.block-editor-block-navigation-grid {
+	width: 100%;
+	border-collapse: collapse;
+}
 
-	&.is-selected,
-	&.is-selected:focus {
+.block-editor-block-navigation-row {
+	.block-editor-block-navigation-row__select-button {
+		width: 100%;
+		text-align: left;
+
+		.block-editor-block-icon {
+			margin-right: 6px;
+		}
+	}
+
+	&.is-selected .block-editor-block-navigation-row__select-button {
 		color: $dark-gray-700;
 		background: $light-gray-300;
 	}
-
-	&:hover {
-		@include menu-style__hover;
-	}
-
-	.block-editor-block-mover {
-		display: flex;
-		margin: 5px;
-	}
 }
 
-.block-editor-block-navigation-item__appender {
+.block-editor-block-navigation-row__mover-cell {
 	width: $icon-button-size;
-}
-
-// Styles for nested block navigation lists.
-.block-editor-block-navigation__list .block-editor-block-navigation__list {
-	margin-top: 2px;
-	border-left: $tree-border-width solid $light-gray-900;
-	margin-left: 1em;
-
-	.block-editor-block-navigation__list {
-		margin-left: 1.5em;
-	}
-
-	.block-editor-block-navigation-item__block,
-	.block-editor-block-navigation-item__appender {
-		position: relative;
-		margin-left: 0.5em;
-
-		&::before {
-			position: absolute;
-			left: -0.5em;
-			background: $light-gray-900;
-			width: 0.5em;
-			height: $tree-border-width;
-			content: "";
-			top: calc(50% - #{ $tree-border-width / 2 });
-		}
-	}
+	opacity: 0;
+	@include reduce-motion("transition");
 
 	.block-editor-block-navigation__item-button {
 		margin-left: 0.8em;
@@ -118,21 +91,30 @@ $tree-item-height: 36px;
 		border-radius: $border-width;
 	}
 }
-
-.components-popover.block-editor-block-navigation__popover {
-	z-index: z-index(".components-popover.block-editor-block-navigation__popover");
-}
-
-.block-editor-block-navigation-item__movers {
-	display: flex;
-	flex-direction: row;
-
-	// Make opacity zero for 'edit-post__fade-in-animation'.
-	opacity: 0;
-	@include reduce-motion("transition");
-
 	&.is-visible {
 		opacity: 1;
 		@include edit-post__fade-in-animation;
+	}
+}
+
+
+.block-editor-block-navigation-appender-row {
+	.block-editor-button-block-appender {
+		width: $icon-button-size;
+		height: $icon-button-size;
+		outline: none;
+		background: none;
+
+		// This aligns the block appender icon with other block icons.
+		margin: 0 2px;
+
+		&:hover:not(:disabled):not([aria-disabled="true"]) {
+			@include menu-style__hover;
+			outline: none;
+		}
+
+		&:focus:not(:disabled):not([aria-disabled="true"]) {
+			@include menu-style__focus;
+		}
 	}
 }
