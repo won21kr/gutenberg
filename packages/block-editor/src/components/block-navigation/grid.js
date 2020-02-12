@@ -29,13 +29,15 @@ function BlockNavigationRows( props ) {
 
 	const isTreeRoot = ! parentBlockClientId;
 	const filteredBlocks = compact( blocks );
-	const hasAppender = showAppender && filteredBlocks.length > 0 && ! isTreeRoot;
+	const hasAppender =
+		showAppender && filteredBlocks.length > 0 && ! isTreeRoot;
 
 	return (
 		<>
 			{ map( filteredBlocks, ( block, index ) => {
 				const { clientId, innerBlocks } = block;
-				const hasNestedBlocks = showNestedBlocks && !! innerBlocks && !! innerBlocks.length;
+				const hasNestedBlocks =
+					showNestedBlocks && !! innerBlocks && !! innerBlocks.length;
 
 				return (
 					<Fragment key={ clientId }>
@@ -63,7 +65,11 @@ function BlockNavigationRows( props ) {
 					</Fragment>
 				);
 			} ) }
-			{ hasAppender && <BlockNavigationAppenderRow parentBlockClientId={ parentBlockClientId } /> }
+			{ hasAppender && (
+				<BlockNavigationAppenderRow
+					parentBlockClientId={ parentBlockClientId }
+				/>
+			) }
 		</>
 	);
 }

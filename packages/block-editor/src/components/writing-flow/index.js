@@ -366,7 +366,10 @@ export default function WritingFlow( { children } ) {
 		// wrapping this one. When that happens, keyboard input events (like
 		// those handled here) that change the focus can cause a modal to close
 		// unexpectedly. Returning early avoids that.
-		if ( container.current && container.current.closest( '[aria-hidden]' ) ) {
+		if (
+			container.current &&
+			container.current.closest( '[aria-hidden]' )
+		) {
 			return;
 		}
 

@@ -25,14 +25,18 @@ import useMovingAnimation from '../use-moving-animation';
 
 const AnimatedTreeGridRow = animated( TreeGridRow );
 
-export default function BlockNavigationRow( { block, onClick, isSelected, position, level, siblingCount, showBlockMovers } ) {
+export default function BlockNavigationRow( {
+	block,
+	onClick,
+	isSelected,
+	position,
+	level,
+	siblingCount,
+	showBlockMovers,
+} ) {
 	const [ isHovered, setIsHovered ] = useState( false );
 	const [ isFocused, setIsFocused ] = useState( false );
-	const {
-		name,
-		clientId,
-		attributes,
-	} = block;
+	const { name, clientId, attributes } = block;
 	const blockType = getBlockType( name );
 	const blockDisplayName = getBlockLabel( blockType, attributes );
 
@@ -40,11 +44,20 @@ export default function BlockNavigationRow( { block, onClick, isSelected, positi
 	const adjustScrolling = false;
 	const enableAnimation = true;
 	const animateOnChange = position;
-	const style = useMovingAnimation( wrapper, isSelected, adjustScrolling, enableAnimation, animateOnChange );
+	const style = useMovingAnimation(
+		wrapper,
+		isSelected,
+		adjustScrolling,
+		enableAnimation,
+		animateOnChange
+	);
 
 	const hasSiblings = siblingCount > 1;
 	const hasVisibleMovers = isHovered || isSelected || isFocused;
-	const moverClassName = classnames( 'block-editor-block-navigation-row__mover-button', { 'is-visible': hasVisibleMovers } );
+	const moverClassName = classnames(
+		'block-editor-block-navigation-row__mover-button',
+		{ 'is-visible': hasVisibleMovers }
+	);
 
 	return (
 		<AnimatedTreeGridRow
@@ -70,7 +83,11 @@ export default function BlockNavigationRow( { block, onClick, isSelected, positi
 					>
 						<BlockIcon icon={ blockType.icon } showColors />
 						{ blockDisplayName }
-						{ isSelected && <span className="screen-reader-text">{ __( '(selected block)' ) }</span> }
+						{ isSelected && (
+							<span className="screen-reader-text">
+								{ __( '(selected block)' ) }
+							</span>
+						) }
 					</Button>
 				) }
 			</TreeGridCell>
