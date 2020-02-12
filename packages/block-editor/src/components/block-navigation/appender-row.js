@@ -1,7 +1,14 @@
 /**
+ * WordPress dependencies
+ */
+import {
+	__experimentalTreeGridRow as TreeGridRow,
+	__experimentalTreeGridCell as TreeGridCell,
+} from '@wordpress/components';
+
+/**
  * Internal dependencies
  */
-import { TreeGridRow, TreeGridCell } from '../tree-grid';
 import ButtonBlockAppender from '../button-block-appender';
 
 export default function BlockNavigationAppenderRow( { parentBlockClientId } ) {

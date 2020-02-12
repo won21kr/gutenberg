@@ -7,7 +7,11 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import { Button } from '@wordpress/components';
+import {
+	Button,
+	__experimentalTreeGridRow as TreeGridRow,
+	__experimentalTreeGridCell as TreeGridCell,
+} from '@wordpress/components';
 import {
 	__experimentalGetBlockLabel as getBlockLabel,
 	getBlockType,
@@ -18,7 +22,6 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { TreeGridRow, TreeGridCell } from '../tree-grid';
 import BlockIcon from '../block-icon';
 import { MoveUpButton, MoveDownButton } from '../block-mover/mover-buttons';
 import useMovingAnimation from '../use-moving-animation';

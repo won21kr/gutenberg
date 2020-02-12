@@ -7,11 +7,11 @@ import { map, compact } from 'lodash';
  * WordPress dependencies
  */
 import { Fragment } from '@wordpress/element';
+import { __experimentalTreeGrid as TreeGrid } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import TreeGrid from '../tree-grid';
 import BlockNavigationRow from './row';
 import BlockNavigationAppenderRow from './appender-row';
 
