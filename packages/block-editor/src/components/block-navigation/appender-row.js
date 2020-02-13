@@ -30,7 +30,7 @@ export default function BlockNavigationAppenderRow( {
 				colSpan="3"
 			>
 				{ ( props ) => (
-					<>
+					<div className="block-editor-block-navigation-appender-row__container">
 						<DescenderLines
 							level={ level }
 							isLastRow={ position === rowCount }
@@ -40,7 +40,7 @@ export default function BlockNavigationAppenderRow( {
 							__experimentalSelectBlockOnInsert={ false }
 							{ ...props }
 						/>
-					</>
+					</div>
 				) }
 			</TreeGridCell>
 		</TreeGridRow>

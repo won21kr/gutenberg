@@ -34,9 +34,17 @@ $tree-item-height: 36px;
 		width: 100%;
 		text-align: left;
 
+		// Make this button's internal dimensions match the appender button.
+		padding: 0 6px;
+
 		.block-editor-block-icon {
 			margin-right: 6px;
 		}
+	}
+
+	.block-editor-block-mover-button {
+		width: $icon-button-size;
+		height: $icon-button-size;
 	}
 
 	&.is-selected .block-editor-block-navigation-row__select-button {
@@ -99,26 +107,44 @@ $tree-item-height: 36px;
 
 .block-editor-block-navigation-row__select-cell,
 .block-editor-block-navigation-appender-row__cell {
-	display: flex;
+	.block-editor-block-navigation-row__select-container,
+	.block-editor-block-navigation-appender-row__container {
+		display: flex;
+	}
 
 	.block-editor-block-navigator-descender-line {
 		position: relative;
 		flex-shrink: 0;
-		width: ( $icon-button-size / 2 ) + 2px;
-		border-right: 2px solid $light-gray-700;
+		width: ( $icon-button-size / 2 ) + 6px;
 
-		&.has-item {
-			margin-right: $grid-size-small;
+		&:first-child {
+			width: ( $icon-button-size / 2 );
 		}
 
-		&.has-item::before {
+		&.has-item {
+			margin-right: 6px;
+		}
+
+		// Draw a vertical line using border-right.
+		&::before {
 			content: "";
 			display: block;
-			border-bottom: 2px solid $light-gray-700;
 			position: absolute;
-			left: 100%;
-			width: 5px;
+			top: -2px;
+			bottom: -2px;
+			right: 0;
+			border-right: 2px solid $light-gray-700;
+		}
+
+		// Draw a horizontal line using border-bottom.
+		&.has-item::after {
+			content: "";
+			display: block;
+			position: absolute;
 			top: $grid-size-large;
+			left: 100%;
+			width: 6px;
+			border-bottom: 2px solid $light-gray-700;
 		}
 
 		&.has-item.is-last-row {
@@ -133,9 +159,6 @@ $tree-item-height: 36px;
 		height: $icon-button-size;
 		outline: none;
 		background: none;
-
-		// This aligns the block appender icon with other block icons.
-		margin: 0 2px;
 
 		&:hover:not(:disabled):not([aria-disabled="true"]) {
 			@include menu-style__hover;

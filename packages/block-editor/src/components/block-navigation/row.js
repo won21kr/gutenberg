@@ -85,7 +85,7 @@ export default function BlockNavigationRow( {
 				colspan={ hasRenderedMovers ? undefined : 3 }
 			>
 				{ ( props ) => (
-					<>
+					<div className="block-editor-block-navigation-row__select-container">
 						<DescenderLines
 							level={ level }
 							isLastRow={ position === rowCount }
@@ -103,7 +103,7 @@ export default function BlockNavigationRow( {
 								</span>
 							) }
 						</Button>
-					</>
+					</div>
 				) }
 			</TreeGridCell>
 			{ hasRenderedMovers && (
