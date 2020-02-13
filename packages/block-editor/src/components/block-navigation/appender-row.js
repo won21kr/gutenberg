@@ -10,6 +10,7 @@ import {
  * Internal dependencies
  */
 import ButtonBlockAppender from '../button-block-appender';
+import DescenderLines from './descender-lines';
 
 export default function BlockNavigationAppenderRow( {
 	parentBlockClientId,
@@ -26,15 +27,20 @@ export default function BlockNavigationAppenderRow( {
 		>
 			<TreeGridCell
 				className="block-editor-block-navigation-appender-row__cell"
-				style={ { paddingLeft: `${ ( level - 1 ) * 16 }px` } }
 				colSpan="3"
 			>
 				{ ( props ) => (
-					<ButtonBlockAppender
-						rootClientId={ parentBlockClientId }
-						__experimentalSelectBlockOnInsert={ false }
-						{ ...props }
-					/>
+					<>
+						<DescenderLines
+							level={ level }
+							isLastRow={ position === rowCount }
+						/>
+						<ButtonBlockAppender
+							rootClientId={ parentBlockClientId }
+							__experimentalSelectBlockOnInsert={ false }
+							{ ...props }
+						/>
+					</>
 				) }
 			</TreeGridCell>
 		</TreeGridRow>

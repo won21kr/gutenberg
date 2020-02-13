@@ -25,6 +25,7 @@ import { __ } from '@wordpress/i18n';
 import BlockIcon from '../block-icon';
 import { MoveUpButton, MoveDownButton } from '../block-mover/mover-buttons';
 import useMovingAnimation from '../use-moving-animation';
+import DescenderLines from './descender-lines';
 
 const AnimatedTreeGridRow = animated( TreeGridRow );
 
@@ -81,23 +82,28 @@ export default function BlockNavigationRow( {
 		>
 			<TreeGridCell
 				className="block-editor-block-navigation-row__select-cell"
-				style={ { paddingLeft: `${ ( level - 1 ) * 16 }px` } }
 				colspan={ hasRenderedMovers ? undefined : 3 }
 			>
 				{ ( props ) => (
-					<Button
-						className="block-editor-block-navigation-row__select-button"
-						onClick={ onClick }
-						{ ...props }
-					>
-						<BlockIcon icon={ blockType.icon } showColors />
-						{ blockDisplayName }
-						{ isSelected && (
-							<span className="screen-reader-text">
-								{ __( '(selected block)' ) }
-							</span>
-						) }
-					</Button>
+					<>
+						<DescenderLines
+							level={ level }
+							isLastRow={ position === rowCount }
+						/>
+						<Button
+							className="block-editor-block-navigation-row__select-button"
+							onClick={ onClick }
+							{ ...props }
+						>
+							<BlockIcon icon={ blockType.icon } showColors />
+							{ blockDisplayName }
+							{ isSelected && (
+								<span className="screen-reader-text">
+									{ __( '(selected block)' ) }
+								</span>
+							) }
+						</Button>
+					</>
 				) }
 			</TreeGridCell>
 			{ hasRenderedMovers && (

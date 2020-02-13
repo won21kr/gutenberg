@@ -97,6 +97,35 @@ $tree-item-height: 36px;
 	}
 }
 
+.block-editor-block-navigation-row__select-cell,
+.block-editor-block-navigation-appender-row__cell {
+	display: flex;
+
+	.block-editor-block-navigator-descender-line {
+		position: relative;
+		flex-shrink: 0;
+		width: ( $icon-button-size / 2 ) + 2px;
+		border-right: 2px solid $light-gray-700;
+
+		&.has-item {
+			margin-right: $grid-size-small;
+		}
+
+		&.has-item::before {
+			content: "";
+			display: block;
+			border-bottom: 2px solid $light-gray-700;
+			position: absolute;
+			left: 100%;
+			width: 5px;
+			top: $grid-size-large;
+		}
+
+		&.has-item.is-last-row {
+			height: $grid-size-large;
+		}
+	}
+}
 
 .block-editor-block-navigation-appender-row {
 	.block-editor-button-block-appender {
