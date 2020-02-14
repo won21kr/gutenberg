@@ -1,14 +1,12 @@
 /**
  * WordPress dependencies
  */
-import {
-	__experimentalTreeGridRow as TreeGridRow,
-	__experimentalTreeGridCell as TreeGridCell,
-} from '@wordpress/components';
+import { __experimentalTreeGridCell as TreeGridCell } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import BlockNavigationRow from './row';
 import ButtonBlockAppender from '../button-block-appender';
 import DescenderLines from './descender-lines';
 
@@ -17,23 +15,26 @@ export default function BlockNavigationAppenderRow( {
 	position,
 	level,
 	rowCount,
+	terminatedLevels,
+	path,
 } ) {
 	return (
-		<TreeGridRow
-			className="block-editor-block-navigation-appender-row"
+		<BlockNavigationRow
 			level={ level }
-			positionInSet={ position }
-			setSize={ rowCount }
+			position={ position }
+			rowCount={ rowCount }
+			path={ path }
 		>
 			<TreeGridCell
-				className="block-editor-block-navigation-appender-row__cell"
+				className="block-editor-block-navigation-row__appender-cell"
 				colSpan="3"
 			>
 				{ ( props ) => (
-					<div className="block-editor-block-navigation-appender-row__container">
+					<div className="block-editor-block-navigation-row__appender-container">
 						<DescenderLines
 							level={ level }
 							isLastRow={ position === rowCount }
+							terminatedLevels={ terminatedLevels }
 						/>
 						<ButtonBlockAppender
 							rootClientId={ parentBlockClientId }
@@ -43,6 +44,6 @@ export default function BlockNavigationAppenderRow( {
 					</div>
 				) }
 			</TreeGridCell>
-		</TreeGridRow>
+		</BlockNavigationRow>
 	);
 }

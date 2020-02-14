@@ -12,7 +12,7 @@ import { __experimentalTreeGrid as TreeGrid } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import BlockNavigationRow from './row';
+import BlockNavigationBlockRow from './block-row';
 import BlockNavigationAppenderRow from './appender-row';
 
 function BlockNavigationRows( props ) {
@@ -25,14 +25,19 @@ function BlockNavigationRows( props ) {
 		showNestedBlocks,
 		parentBlockClientId,
 		level = 1,
+		terminatedLevels = [],
+		path = [],
 	} = props;
 
 	const isTreeRoot = ! parentBlockClientId;
 	const filteredBlocks = compact( blocks );
-	// Add +1 to the siblingCount to take the block appender into account.
-	const rowCount = filteredBlocks.length + 1;
+	// Add +1 to the rowCount to take the block appender into account.
+	const rowCount = showAppender
+		? filteredBlocks.length + 1
+		: filteredBlocks.length;
 	const hasAppender =
 		showAppender && filteredBlocks.length > 0 && ! isTreeRoot;
+	const appenderPosition = rowCount;
 
 	return (
 		<>
@@ -40,17 +45,25 @@ function BlockNavigationRows( props ) {
 				const { clientId, innerBlocks } = block;
 				const hasNestedBlocks =
 					showNestedBlocks && !! innerBlocks && !! innerBlocks.length;
+				const position = index + 1;
+				const isLastRowAtLevel = rowCount === position;
+				const updatedTerminatedLevels = isLastRowAtLevel
+					? [ ...terminatedLevels, level ]
+					: terminatedLevels;
+				const updatedPath = [ ...path, position ];
 
 				return (
 					<Fragment key={ clientId }>
-						<BlockNavigationRow
+						<BlockNavigationBlockRow
 							block={ block }
 							onClick={ () => selectBlock( clientId ) }
 							isSelected={ selectedBlockClientId === clientId }
 							level={ level }
-							position={ index + 1 }
+							position={ position }
 							rowCount={ rowCount }
 							showBlockMovers={ showBlockMovers }
+							terminatedLevels={ terminatedLevels }
+							path={ updatedPath }
 						/>
 						{ hasNestedBlocks && (
 							<BlockNavigationRows
@@ -62,6 +75,8 @@ function BlockNavigationRows( props ) {
 								showNestedBlocks={ showNestedBlocks }
 								parentBlockClientId={ clientId }
 								level={ level + 1 }
+								terminatedLevels={ updatedTerminatedLevels }
+								path={ updatedPath }
 							/>
 						) }
 					</Fragment>
@@ -71,8 +86,10 @@ function BlockNavigationRows( props ) {
 				<BlockNavigationAppenderRow
 					parentBlockClientId={ parentBlockClientId }
 					position={ rowCount }
-					rowCount={ rowCount }
+					rowCount={ appenderPosition }
 					level={ level }
+					terminatedLevels={ terminatedLevels }
+					path={ [ ...path, appenderPosition ] }
 				/>
 			) }
 		</>

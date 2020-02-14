@@ -24,6 +24,10 @@ $tree-item-height: 36px;
 	width: calc(100% - 0.8em);
 }
 
+.block-editor-block-navigation__container {
+	padding: $grid-size - $border-width;
+}
+
 .block-editor-block-navigation-grid {
 	width: 100%;
 	border-collapse: collapse;
@@ -42,21 +46,38 @@ $tree-item-height: 36px;
 		}
 	}
 
+	&.is-selected .block-editor-block-navigation-row__select-button {
+		color: $dark-gray-700;
+		background: $light-gray-300;
+	}
+
+	.block-editor-block-navigation-row__mover-cell {
+		width: $icon-button-size;
+		opacity: 0;
+		@include reduce-motion("transition");
+
+		&.is-visible {
+			opacity: 1;
+			@include edit-post__fade-in-animation;
+		}
+	}
+
 	.block-editor-block-mover-button {
 		width: $icon-button-size;
 		height: $icon-button-size;
 	}
 
-	&.is-selected .block-editor-block-navigation-row__select-button {
-		color: $dark-gray-700;
-		background: $light-gray-300;
-	}
-}
+	.block-editor-button-block-appender {
+		width: $icon-button-size;
+		height: $icon-button-size;
+		outline: none;
+		background: none;
 
-.block-editor-block-navigation-row__mover-cell {
-	width: $icon-button-size;
-	opacity: 0;
-	@include reduce-motion("transition");
+		&:hover:not(:disabled):not([aria-disabled="true"]) {
+			@include menu-style__hover;
+			outline: none;
+		}
+	}
 
 	.block-editor-block-navigation__item-button {
 		margin-left: 0.8em;
@@ -98,17 +119,21 @@ $tree-item-height: 36px;
 		box-shadow: 0 0 0 $border-width $dark-gray-primary;
 		border-radius: $border-width;
 	}
-}
+
 	&.is-visible {
 		opacity: 1;
 		@include edit-post__fade-in-animation;
+
+		&:focus:not(:disabled):not([aria-disabled="true"]) {
+			@include menu-style__focus;
+		}
 	}
 }
 
 .block-editor-block-navigation-row__select-cell,
-.block-editor-block-navigation-appender-row__cell {
+.block-editor-block-navigation-row__appender-cell {
 	.block-editor-block-navigation-row__select-container,
-	.block-editor-block-navigation-appender-row__container {
+	.block-editor-block-navigation-row__appender-container {
 		display: flex;
 	}
 
@@ -136,6 +161,16 @@ $tree-item-height: 36px;
 			border-right: 2px solid $light-gray-700;
 		}
 
+		// If a vertical line has terminated, don't draw it.
+		&.is-terminated::before {
+			border-color: transparent;
+		}
+
+		// Make the last vertical line half-height.
+		&.has-item.is-last-row {
+			height: $grid-size-large;
+		}
+
 		// Draw a horizontal line using border-bottom.
 		&.has-item::after {
 			content: "";
@@ -145,28 +180,6 @@ $tree-item-height: 36px;
 			left: 100%;
 			width: 6px;
 			border-bottom: 2px solid $light-gray-700;
-		}
-
-		&.has-item.is-last-row {
-			height: $grid-size-large;
-		}
-	}
-}
-
-.block-editor-block-navigation-appender-row {
-	.block-editor-button-block-appender {
-		width: $icon-button-size;
-		height: $icon-button-size;
-		outline: none;
-		background: none;
-
-		&:hover:not(:disabled):not([aria-disabled="true"]) {
-			@include menu-style__hover;
-			outline: none;
-		}
-
-		&:focus:not(:disabled):not([aria-disabled="true"]) {
-			@include menu-style__focus;
 		}
 	}
 }
