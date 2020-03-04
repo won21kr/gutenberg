@@ -84,6 +84,15 @@ module.exports = {
 						spinner,
 						debug: config.debug,
 					} );
+
+					// Ensure the uploads folder is writeable, creating it if necessary.
+					const wpUploadsPath = path.join(
+						config.coreSource.path,
+						'wp-content/uploads'
+					);
+					await fs.mkdir( wpUploadsPath, { recursive: true } );
+					await fs.chmod( wpUploadsPath, 0o0767 );
+
 					await copyCoreFiles(
 						config.coreSource.path,
 						config.coreSource.testsPath
