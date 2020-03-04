@@ -85,18 +85,19 @@ module.exports = {
 						debug: config.debug,
 					} );
 
-					// Ensure the uploads folder is writeable, creating it if necessary.
-					const wpUploadsPath = path.join(
-						config.coreSource.path,
-						'wp-content/uploads'
-					);
-					await fs.mkdir( wpUploadsPath, { recursive: true } );
-					await fs.chmod( wpUploadsPath, 0o0767 );
-
 					await copyCoreFiles(
 						config.coreSource.path,
 						config.coreSource.testsPath
 					);
+
+					// Ensure the tests uploads folder is writeable for travis,
+					// creating the folder if necessary.
+					const testsUploadsPath = path.join(
+						config.coreSource.testsPath,
+						'wp-content/uploads'
+					);
+					await fs.mkdir( testsUploadsPath, { recursive: true } );
+					await fs.chmod( testsUploadsPath, 0o0767 );
 				}
 			} )(),
 
