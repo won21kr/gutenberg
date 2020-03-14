@@ -39,7 +39,7 @@ export {
 	__experimentalPageTemplatePicker,
 	__experimentalUsePageTemplatePickerVisible,
 	__experimentalWithPageTemplatePickerVisible,
-} from './page-template-picker';
+} from './mobile/page-template-picker';
 export { default as BlockList } from './block-list';
 export { default as BlockMover } from './block-mover';
 export { default as BlockToolbar } from './block-toolbar';
