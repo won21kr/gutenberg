@@ -4,11 +4,11 @@
 import { select } from '@wordpress/data';
 import { cleanForSlug } from '@wordpress/editor';
 
-export function linearToNestedList( array, index = 0 ) {
+export function linearToNestedHeadingList( array, index = 0 ) {
 	const returnValue = [];
 
 	array.forEach( function( heading, key ) {
-		if ( typeof heading.content === 'undefined' ) {
+		if ( heading.content === undefined ) {
 			return;
 		}
 
@@ -18,7 +18,7 @@ export function linearToNestedList( array, index = 0 ) {
 			// If it does and the next level is greater than the current level,
 			// the next iteration becomes a child of the current interation.
 			if (
-				typeof array[ key + 1 ] !== 'undefined' &&
+				array[ key + 1 ] !== undefined &&
 				array[ key + 1 ].level > heading.level
 			) {
 				// We need to calculate the last index before the next iteration that has the same level (siblings).
@@ -36,7 +36,7 @@ export function linearToNestedList( array, index = 0 ) {
 				returnValue.push( {
 					block: heading,
 					index: index + key,
-					children: linearToNestedList(
+					children: linearToNestedHeadingList(
 						array.slice( key + 1, endOfSlice ),
 						index + key + 1
 					),
@@ -82,7 +82,7 @@ export function convertHeadingBlocksToAttributes( headingBlocks ) {
 		contentDiv.innerHTML = anchorContent;
 		let anchor = contentDiv.textContent || contentDiv.innerText || '';
 
-		if ( anchor !== '' && anchor.indexOf( '#' ) === -1 ) {
+		if ( anchor !== '' && ! anchor.includes( '#' ) ) {
 			anchor = '#' + cleanForSlug( anchor );
 		}
 
@@ -94,10 +94,10 @@ export function updateHeadingBlockAnchors() {
 	// Add anchors to any headings that don't have one.
 	getHeadingBlocks().forEach( function( heading, key ) {
 		const headingAnchorEmpty =
-			typeof heading.attributes.anchor === 'undefined' ||
+			heading.attributes.anchor === undefined ||
 			heading.attributes.anchor === '';
 		const headingContentEmpty =
-			typeof heading.attributes.content === 'undefined' ||
+			heading.attributes.content === undefined ||
 			heading.attributes.content === '';
 		const headingDefaultAnchor =
 			! headingAnchorEmpty &&
