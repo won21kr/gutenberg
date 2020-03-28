@@ -1,13 +1,6 @@
-/**
- * WordPress dependencies
- */
-
-export default function ListLevel( props ) {
-	const { children, noWrapList = false } = props;
-	let childNodes = null;
-
+export default function ListItem( { children, noWrapList = false } ) {
 	if ( children ) {
-		childNodes = children.map( function( childNode, index ) {
+		const childNodes = children.map( function( childNode, index ) {
 			const { content, anchor, level } = childNode.block;
 
 			const entry = anchor ? (
@@ -31,7 +24,7 @@ export default function ListLevel( props ) {
 				<li key={ index }>
 					{ entry }
 					{ childNode.children ? (
-						<ListLevel>{ childNode.children }</ListLevel>
+						<ListItem>{ childNode.children }</ListItem>
 					) : null }
 				</li>
 			);
