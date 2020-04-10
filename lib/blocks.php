@@ -17,19 +17,20 @@ function gutenberg_reregister_core_block_types() {
 	}
 
 	$block_names = array(
-		'archives.php'        => 'core/archives',
-		'block.php'           => 'core/block',
-		'calendar.php'        => 'core/calendar',
-		'categories.php'      => 'core/categories',
-		'latest-comments.php' => 'core/latest-comments',
-		'latest-posts.php'    => 'core/latest-posts',
-		'legacy-widget.php'   => 'core/legacy-widget',
-		'navigation.php'      => 'core/navigation',
-		'rss.php'             => 'core/rss',
-		'shortcode.php'       => 'core/shortcode',
-		'search.php'          => 'core/search',
-		'social-link.php'     => 'core/social-link',
-		'tag-cloud.php'       => 'core/tag-cloud',
+		'archives.php'          => 'core/archives',
+		'block.php'             => 'core/block',
+		'calendar.php'          => 'core/calendar',
+		'categories.php'        => 'core/categories',
+		'latest-comments.php'   => 'core/latest-comments',
+		'latest-posts.php'      => 'core/latest-posts',
+		'legacy-widget.php'     => 'core/legacy-widget',
+		'navigation.php'        => 'core/navigation',
+		'rss.php'               => 'core/rss',
+		'shortcode.php'         => 'core/shortcode',
+		'search.php'            => 'core/search',
+		'social-link.php'       => 'core/social-link',
+		'table-of-contents.php' => 'core/table-of-contents',
+		'tag-cloud.php'         => 'core/tag-cloud',
 	);
 
 	if ( gutenberg_is_experiment_enabled( 'gutenberg-full-site-editing' ) ) {
