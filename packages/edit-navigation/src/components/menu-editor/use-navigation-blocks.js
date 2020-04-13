@@ -1,11 +1,12 @@
 /**
  * External dependencies
  */
-import { isEqual, difference } from 'lodash';
+import { isEqual, difference, find } from 'lodash';
 
 /**
  * WordPress dependencies
  */
+import apiFetch from '@wordpress/api-fetch';
 import { createBlock } from '@wordpress/blocks';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useRef, useEffect } from '@wordpress/element';
@@ -14,6 +15,7 @@ function createBlockFromMenuItem( menuItem ) {
 	return createBlock( 'core/navigation-link', {
 		label: menuItem.title.raw,
 		url: menuItem.url,
+		id: menuItem.id,
 	} );
 }
 
@@ -24,11 +26,36 @@ function createMenuItemAttributesFromBlock( block ) {
 	};
 }
 
+async function deleteMenuItems(
+	menuItemEntity,
+	deletedClientIds,
+	currentBlocks
+) {
+	for ( const clientId of deletedClientIds ) {
+		const itemToDelete = currentBlocks[ clientId ];
+		await deleteMenuItem( menuItemEntity, itemToDelete.id );
+	}
+}
+
+async function deleteMenuItem( entity, recordId ) {
+	const path = `${ entity.baseURL + '/' + recordId + '?force=true' }`;
+	const deletedRecord = await apiFetch( {
+		path,
+		method: 'DELETE',
+	} );
+	return deletedRecord.previous;
+}
+
 export default function useNavigationBlocks( menuId ) {
 	const menuItems = useSelect(
 		( select ) => select( 'core' ).getMenuItems( { menus: menuId } ),
 		[ menuId ]
 	);
+
+	const entities = useSelect( ( select ) =>
+		select( 'core' ).getEntitiesByKind( 'root' )
+	);
+	const menuItemEntity = find( entities, { kind: 'root', name: 'menuItem' } );
 
 	const { saveMenuItem } = useDispatch( 'core' );
 
@@ -87,11 +114,11 @@ export default function useNavigationBlocks( menuId ) {
 			innerBlocks.map( ( block ) => block.clientId )
 		);
 
-		// Disable reason, this code will eventually be implemented.
-		// eslint-disable-next-line no-unused-vars
-		for ( const clientId of deletedClientIds ) {
-			// TODO - delete menu items.
-		}
+		deleteMenuItems(
+			menuItemEntity,
+			deletedClientIds,
+			menuItemsRef.current
+		);
 	};
 
 	return [ blocks, setBlocks, saveBlocks ];
