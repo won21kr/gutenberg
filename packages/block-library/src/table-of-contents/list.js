@@ -1,4 +1,4 @@
-export default function ListItem( { children, noWrapList = false } ) {
+export default function List( { children, noWrapList = false } ) {
 	if ( children ) {
 		const childNodes = children.map( ( childNode, index ) => {
 			const { anchor, content } = childNode.block;
@@ -17,7 +17,7 @@ export default function ListItem( { children, noWrapList = false } ) {
 				<li key={ index }>
 					{ entry }
 					{ childNode.children ? (
-						<ListItem>{ childNode.children }</ListItem>
+						<List>{ childNode.children }</List>
 					) : null }
 				</li>
 			);
