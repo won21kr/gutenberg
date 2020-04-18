@@ -20,7 +20,10 @@ export const settings = {
 		'Summarize your post with a list of headings. Add HTML anchors to Heading blocks to link them here.'
 	),
 	icon: 'list-view',
-	category: 'layout',
+	supports: {
+		html: false,
+		lightBlockWrapper: true,
+	},
 	transforms,
 	edit,
 };

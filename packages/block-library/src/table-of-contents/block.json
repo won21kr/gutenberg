@@ -1,6 +1,6 @@
 {
 	"name": "core/table-of-contents",
-	"category": "common",
+	"category": "layout",
 	"attributes": {
 		"className": {
 			"type": "string"
