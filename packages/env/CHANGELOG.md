@@ -1,5 +1,9 @@
 ## Master
 
+### New Feature
+
+-   View log output with the new `wp-env` log command.
+
 ## 1.1.0 (2020-04-01)
 
 ### New Feature
