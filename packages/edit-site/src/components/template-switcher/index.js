@@ -61,24 +61,18 @@ export default function TemplateSwitcher( {
 	const { currentTheme, templates, templateParts } = useSelect(
 		( select ) => {
 			const { getCurrentTheme, getEntityRecords } = select( 'core' );
-			const _currentTheme = getCurrentTheme();
 			return {
-				currentTheme: _currentTheme,
-				templates: getEntityRecords( 'postType', 'wp_template', {
-					status: [ 'publish' ],
-					meta: { theme: _currentTheme?.stylesheet },
-				} )?.map( ( template ) => ( {
-					label: <TemplateLabel template={ template } />,
-					value: template.id,
-					slug: template.slug,
-				} ) ),
+				currentTheme: getCurrentTheme(),
+				templates: getEntityRecords( 'postType', 'wp_template' )?.map(
+					( template ) => ( {
+						label: <TemplateLabel template={ template } />,
+						value: template.id,
+						slug: template.slug,
+					} )
+				),
 				templateParts: getEntityRecords(
 					'postType',
-					'wp_template_part',
-					{
-						status: [ 'publish' ],
-						meta: { theme: _currentTheme?.stylesheet },
-					}
+					'wp_template_part'
 				)?.map( ( templatePart ) => ( {
 					label: <TemplateLabel template={ templatePart } />,
 					value: templatePart.id,
