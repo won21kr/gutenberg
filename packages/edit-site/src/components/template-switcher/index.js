@@ -61,25 +61,20 @@ export default function TemplateSwitcher( {
 
 	const { currentTheme, templates, templateParts } = useSelect(
 		( select ) => {
-			const { getCurrentTheme, getEntityRecord } = select( 'core' );
+			const {
+				getCurrentTheme,
+				getEntityRecord,
+				getEntityRecords,
+			} = select( 'core' );
 			return {
 				currentTheme: getCurrentTheme(),
-				templates: ids.map( ( id ) => {
-					const template = getEntityRecord(
-						'postType',
-						'wp_template',
-						id
-					);
-					return {
-						label: template ? (
-							<TemplateLabel template={ template } />
-						) : (
-							__( 'Loading…' )
-						),
-						value: id,
-						slug: template ? template.slug : __( 'Loading…' ),
-					};
-				} ),
+				templates: getEntityRecords( 'postType', 'wp_template' )?.map(
+					( template ) => ( {
+						label: <TemplateLabel template={ template } />,
+						value: template.id,
+						slug: template.slug,
+					} )
+				),
 				templateParts: templatePartIds.map( ( id ) => {
 					const template = getEntityRecord(
 						'postType',
@@ -98,7 +93,7 @@ export default function TemplateSwitcher( {
 				} ),
 			};
 		},
-		[ ids, templatePartIds ]
+		[ templatePartIds ]
 	);
 	const [ isAddTemplateOpen, setIsAddTemplateOpen ] = useState( false );
 	return (
@@ -114,7 +109,7 @@ export default function TemplateSwitcher( {
 					children: ( isTemplatePart
 						? templateParts
 						: templates
-					).find( ( choice ) => choice.value === activeId ).slug,
+					)?.find( ( choice ) => choice.value === activeId ).slug,
 				} }
 			>
 				{ ( { onClose } ) => (
