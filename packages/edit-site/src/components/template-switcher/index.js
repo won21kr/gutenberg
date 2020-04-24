@@ -35,7 +35,6 @@ function TemplateLabel( { template } ) {
 
 export default function TemplateSwitcher( {
 	ids,
-	templatePartIds,
 	activeId,
 	isTemplatePart,
 	onActiveIdChange,
@@ -61,11 +60,7 @@ export default function TemplateSwitcher( {
 
 	const { currentTheme, templates, templateParts } = useSelect(
 		( select ) => {
-			const {
-				getCurrentTheme,
-				getEntityRecord,
-				getEntityRecords,
-			} = select( 'core' );
+			const { getCurrentTheme, getEntityRecords } = select( 'core' );
 			return {
 				currentTheme: getCurrentTheme(),
 				templates: getEntityRecords( 'postType', 'wp_template' )?.map(
@@ -75,25 +70,16 @@ export default function TemplateSwitcher( {
 						slug: template.slug,
 					} )
 				),
-				templateParts: templatePartIds.map( ( id ) => {
-					const template = getEntityRecord(
-						'postType',
-						'wp_template_part',
-						id
-					);
-					return {
-						label: template ? (
-							<TemplateLabel template={ template } />
-						) : (
-							__( 'Loading…' )
-						),
-						value: id,
-						slug: template ? template.slug : __( 'Loading…' ),
-					};
-				} ),
+				templateParts: getEntityRecords(
+					'postType',
+					'wp_template_part'
+				)?.map( ( templatePart ) => ( {
+					label: <TemplateLabel template={ templatePart } />,
+					value: templatePart.id,
+					slug: templatePart.slug,
+				} ) ),
 			};
-		},
-		[ templatePartIds ]
+		}
 	);
 	const [ isAddTemplateOpen, setIsAddTemplateOpen ] = useState( false );
 	return (
