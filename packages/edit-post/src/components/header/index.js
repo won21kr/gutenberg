@@ -3,9 +3,9 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Button, Dropdown } from '@wordpress/components';
-import { useViewportMatch } from '@wordpress/compose';
 import { PostPreviewButton, PostSavedState } from '@wordpress/editor';
 import { useSelect, useDispatch } from '@wordpress/data';
+import { useViewportMatch } from '@wordpress/compose';
 import { cog } from '@wordpress/icons';
 import { PinnedItems, AdminMenuToggle } from '@wordpress/interface';
 
@@ -25,6 +25,7 @@ function Header( { onToggleInserter, isInserterOpen } ) {
 		isPublishSidebarOpened,
 		isSaving,
 		getBlockSelectionStart,
+		isFullscreenActive,
 		showIconLabel,
 	} = useSelect(
 		( select ) => ( {
@@ -82,10 +83,7 @@ function Header( { onToggleInserter, isInserterOpen } ) {
 					forceIsSaving={ isSaving }
 				/>
 			) }
-			<PreviewOptions
-				forceIsAutosaveable={ hasActiveMetaboxes }
-				forcePreviewLink={ isSaving ? null : undefined }
-			/>
+			<DevicePreview />
 			<PostPreviewButton
 				forceIsAutosaveable={ hasActiveMetaboxes }
 				forcePreviewLink={ isSaving ? null : undefined }
@@ -100,7 +98,6 @@ function Header( { onToggleInserter, isInserterOpen } ) {
 				onClick={ toggleGeneralSidebar }
 				isPressed={ isEditorSidebarOpened }
 				aria-expanded={ isEditorSidebarOpened }
-				showIconLabel={ showIconLabel }
 				shortcut={ shortcut }
 			/>
 			<PinnedItems.Slot scope="core/edit-post" />
@@ -116,38 +113,6 @@ function Header( { onToggleInserter, isInserterOpen } ) {
 					onToggleInserter={ onToggleInserter }
 					isInserterOpen={ isInserterOpen }
 				/>
-			</div>
-			<div className="edit-post-header__settings">
-				{ ! isPublishSidebarOpened && (
-					// This button isn't completely hidden by the publish sidebar.
-					// We can't hide the whole toolbar when the publish sidebar is open because
-					// we want to prevent mounting/unmounting the PostPublishButtonOrToggle DOM node.
-					// We track that DOM node to return focus to the PostPublishButtonOrToggle
-					// when the publish sidebar has been closed.
-					<PostSavedState
-						forceIsDirty={ hasActiveMetaboxes }
-						forceIsSaving={ isSaving }
-					/>
-				) }
-				<DevicePreview />
-				<PostPreviewButton
-					forceIsAutosaveable={ hasActiveMetaboxes }
-					forcePreviewLink={ isSaving ? null : undefined }
-				/>
-				<PostPublishButtonOrToggle
-					forceIsDirty={ hasActiveMetaboxes }
-					forceIsSaving={ isSaving }
-				/>
-				<Button
-					icon={ cog }
-					label={ __( 'Settings' ) }
-					onClick={ toggleGeneralSidebar }
-					isPressed={ isEditorSidebarOpened }
-					aria-expanded={ isEditorSidebarOpened }
-					shortcut={ shortcut }
-				/>
-				<PinnedItems.Slot scope="core/edit-post" />
-				<MoreMenu />
 			</div>
 			{ isLargeViewport && headerSettings }
 			{ ! isLargeViewport && (
