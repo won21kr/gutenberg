@@ -99,6 +99,8 @@ function Header( { onToggleInserter, isInserterOpen } ) {
 				isPressed={ isEditorSidebarOpened }
 				aria-expanded={ isEditorSidebarOpened }
 				shortcut={ shortcut }
+				showIconLabel={ showIconLabel }
+				showTooltip={ ! showIconLabel }
 			/>
 			<PinnedItems.Slot scope="core/edit-post" />
 			<MoreMenu showIconLabel={ showIconLabel } />

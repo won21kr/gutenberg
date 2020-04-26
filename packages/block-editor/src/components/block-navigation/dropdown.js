@@ -23,7 +23,12 @@ const MenuIcon = (
 	</SVG>
 );
 
-function BlockNavigationDropdownToggle( { isEnabled, onToggle, isOpen } ) {
+function BlockNavigationDropdownToggle( {
+	isEnabled,
+	onToggle,
+	isOpen,
+	showTooltip,
+} ) {
 	useShortcut(
 		'core/edit-post/toggle-block-navigation',
 		useCallback( onToggle, [ onToggle ] ),
@@ -49,11 +54,12 @@ function BlockNavigationDropdownToggle( { isEnabled, onToggle, isOpen } ) {
 			className="block-editor-block-navigation"
 			shortcut={ shortcut }
 			aria-disabled={ ! isEnabled }
+			showTooltip={ showTooltip }
 		/>
 	);
 }
 
-function BlockNavigationDropdown( { isDisabled } ) {
+function BlockNavigationDropdown( { isDisabled, showTooltip } ) {
 	const hasBlocks = useSelect(
 		( select ) => !! select( 'core/block-editor' ).getBlockCount(),
 		[]
@@ -68,6 +74,7 @@ function BlockNavigationDropdown( { isDisabled } ) {
 				<BlockNavigationDropdownToggle
 					{ ...toggleProps }
 					isEnabled={ isEnabled }
+					showTooltip={ showTooltip }
 				/>
 			) }
 			renderContent={ ( { onClose } ) => (
