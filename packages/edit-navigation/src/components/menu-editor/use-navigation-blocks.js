@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isEqual, difference, find } from 'lodash';
+import { isEqual, difference } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -10,6 +10,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { createBlock } from '@wordpress/blocks';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useRef, useEffect } from '@wordpress/element';
+import { sprintf, __ } from '@wordpress/i18n';
 
 function createBlockFromMenuItem( menuItem ) {
 	return createBlock( 'core/navigation-link', {
@@ -26,19 +27,17 @@ function createMenuItemAttributesFromBlock( block ) {
 	};
 }
 
-async function deleteMenuItems(
-	menuItemEntity,
-	deletedClientIds,
-	currentBlocks
-) {
+async function deleteMenuItems( deletedClientIds, currentBlocks ) {
 	for ( const clientId of deletedClientIds ) {
 		const itemToDelete = currentBlocks[ clientId ];
-		await deleteMenuItem( menuItemEntity, itemToDelete.id );
+		await deleteMenuItem( itemToDelete.id );
 	}
 }
 
-async function deleteMenuItem( entity, recordId ) {
-	const path = `${ entity.baseURL + '/' + recordId + '?force=true' }`;
+async function deleteMenuItem( recordId ) {
+	const path = `${ '/__experimental/menu-items/' +
+		recordId +
+		'?force=true' }`;
 	const deletedRecord = await apiFetch( {
 		path,
 		method: 'DELETE',
@@ -52,10 +51,7 @@ export default function useNavigationBlocks( menuId ) {
 		[ menuId ]
 	);
 
-	const entities = useSelect( ( select ) =>
-		select( 'core' ).getEntitiesByKind( 'root' )
-	);
-	const menuItemEntity = find( entities, { kind: 'root', name: 'menuItem' } );
+	const { createSuccessNotice } = useDispatch( 'core/notices' );
 
 	const { saveMenuItem } = useDispatch( 'core' );
 
@@ -114,11 +110,20 @@ export default function useNavigationBlocks( menuId ) {
 			innerBlocks.map( ( block ) => block.clientId )
 		);
 
-		deleteMenuItems(
-			menuItemEntity,
-			deletedClientIds,
-			menuItemsRef.current
-		);
+		if ( deletedClientIds.length > 0 ) {
+			deleteMenuItems( deletedClientIds, menuItemsRef.current );
+
+			createSuccessNotice(
+				sprintf(
+					/* translators: %s: block pattern title. */
+					__( 'Deleted %s menu items.' ),
+					deletedClientIds.length
+				),
+				{
+					type: 'snackbar',
+				}
+			);
+		}
 	};
 
 	return [ blocks, setBlocks, saveBlocks ];
