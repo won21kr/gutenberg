@@ -269,7 +269,6 @@ function LinkControl( {
 
 		return Promise.resolve( [
 			{
-				id: val,
 				title: val,
 				url: type === 'URL' ? prependHTTP( val ) : val,
 				type,
