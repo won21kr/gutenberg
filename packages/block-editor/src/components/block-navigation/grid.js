@@ -103,7 +103,7 @@ function BlockNavigationRows( props ) {
  *
  * @param {Object} props
  */
-export default function BlockNavigationGrid( props ) {
+export default function( props ) {
 	return (
 		<TreeGrid className="block-editor-block-navigation-grid">
 			<BlockNavigationRows { ...props } />

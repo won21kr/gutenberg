@@ -10,49 +10,49 @@ $tree-item-height: 36px;
 	color: $dark-gray-300;
 }
 
-.block-editor-block-navigation__list {
-	padding: 0;
-	margin: 0;
-}
-
-.block-editor-block-navigation__list .block-editor-button-block-appender {
-	outline: none;
-	background: none;
-	padding: $grid-unit-10;
-	padding: 6px;
-	margin-left: 0.8em;
-	width: calc(100% - 0.8em);
-}
-
 .block-editor-block-navigation__container {
-	padding: $grid-size - $border-width;
+	padding: $grid-unit - $border-width;
 }
 
 .block-editor-block-navigation-grid {
 	width: 100%;
 	border-collapse: collapse;
+	padding: 0;
+	margin: 0;
 }
 
 .block-editor-block-navigation-row {
 	.block-editor-block-navigation-row__select-button {
-		width: 100%;
+		display: flex;
+		align-items: center;
+		width: calc(100% - 0.8em);
+		height: auto;
+		padding: 6px;
 		text-align: left;
-
-		// Make this button's internal dimensions match the appender button.
-		padding: 0 6px;
-
-		.block-editor-block-icon {
-			margin-right: 6px;
-		}
+		color: $dark-gray-600;
+		border-radius: 2px;
 	}
 
-	&.is-selected .block-editor-block-navigation-row__select-button {
-		color: $dark-gray-700;
-		background: $light-gray-300;
+	&.is-visible .block-editor-block-navigation-row__select-button {
+		opacity: 1;
+		@include edit-post__fade-in-animation;
+	}
+
+
+	.block-editor-block-icon {
+		margin-right: 6px;
+	}
+
+	&.is-selected svg,
+	&.is-selected:focus svg {
+		color: $white;
+		background: $dark-gray-primary;
+		box-shadow: 0 0 0 $border-width $dark-gray-primary;
+		border-radius: $border-width;
 	}
 
 	.block-editor-block-navigation-row__mover-cell {
-		width: $icon-button-size;
+		width: $button-size;
 		opacity: 0;
 		@include reduce-motion("transition");
 
@@ -63,26 +63,17 @@ $tree-item-height: 36px;
 	}
 
 	.block-editor-block-mover-button {
-		width: $icon-button-size;
-		height: $icon-button-size;
+		width: $button-size;
+		height: $button-size;
 	}
 
 	.block-editor-button-block-appender {
-		width: $icon-button-size;
-		height: $icon-button-size;
 		outline: none;
 		background: none;
-
-		&:hover:not(:disabled):not([aria-disabled="true"]) {
-			@include menu-style__hover;
-			outline: none;
-		}
-	}
-
-	.block-editor-block-navigation__item-button {
+		padding: $grid-unit-10;
+		padding: 6px;
 		margin-left: 0.8em;
 		width: calc(100% - 0.8em);
-		height: auto;
 	}
 
 	& > li:last-child {
@@ -99,37 +90,6 @@ $tree-item-height: 36px;
 	}
 }
 
-.block-editor-block-navigation-item__button {
-	display: flex;
-	align-items: center;
-	width: 100%;
-	padding: 6px;
-	text-align: left;
-	color: $dark-gray-600;
-	border-radius: 2px;
-
-	.block-editor-block-icon {
-		margin-right: 6px;
-	}
-
-	&.is-selected svg,
-	&.is-selected:focus svg {
-		color: $white;
-		background: $dark-gray-primary;
-		box-shadow: 0 0 0 $border-width $dark-gray-primary;
-		border-radius: $border-width;
-	}
-
-	&.is-visible {
-		opacity: 1;
-		@include edit-post__fade-in-animation;
-
-		&:focus:not(:disabled):not([aria-disabled="true"]) {
-			@include menu-style__focus;
-		}
-	}
-}
-
 .block-editor-block-navigation-row__select-cell,
 .block-editor-block-navigation-row__appender-cell {
 	.block-editor-block-navigation-row__select-container,
@@ -140,10 +100,10 @@ $tree-item-height: 36px;
 	.block-editor-block-navigator-descender-line {
 		position: relative;
 		flex-shrink: 0;
-		width: ( $icon-button-size / 2 ) + 6px;
+		width: ( $button-size / 2 ) + 6px;
 
 		&:first-child {
-			width: ( $icon-button-size / 2 );
+			width: ( $button-size / 2 );
 		}
 
 		&.has-item {
@@ -155,10 +115,10 @@ $tree-item-height: 36px;
 			content: "";
 			display: block;
 			position: absolute;
-			top: -2px;
+			top: -1px;
 			bottom: -2px;
 			right: 0;
-			border-right: 2px solid $light-gray-700;
+			border-right: 2px solid $light-gray-900;
 		}
 
 		// If a vertical line has terminated, don't draw it.
@@ -168,7 +128,7 @@ $tree-item-height: 36px;
 
 		// Make the last vertical line half-height.
 		&.has-item.is-last-row {
-			height: $grid-size-large;
+			height: $grid-unit-20;
 		}
 
 		// Draw a horizontal line using border-bottom.
@@ -176,10 +136,10 @@ $tree-item-height: 36px;
 			content: "";
 			display: block;
 			position: absolute;
-			top: $grid-size-large;
+			top: $grid-unit-20;
 			left: 100%;
-			width: 6px;
-			border-bottom: 2px solid $light-gray-700;
+			width: 5px;
+			border-bottom: 2px solid $light-gray-900;
 		}
 	}
 }

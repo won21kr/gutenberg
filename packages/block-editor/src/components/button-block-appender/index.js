@@ -6,7 +6,7 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import { Button, Tooltip } from '@wordpress/components';
+import { Button, Tooltip, VisuallyHidden } from '@wordpress/components';
 import { forwardRef } from '@wordpress/element';
 import { _x, sprintf } from '@wordpress/i18n';
 import { Icon, create } from '@wordpress/icons';

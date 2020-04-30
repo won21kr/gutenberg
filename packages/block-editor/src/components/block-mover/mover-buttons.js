@@ -133,8 +133,8 @@ const BlockMoverButton = forwardRef(
 						`is-${ direction }-button`
 					) }
 					icon={ getArrowIcon( direction, moverOrientation, isRTL ) }
-					// translators: %s: Horizontal direction of block movement ( left, right )
 					label={ sprintf(
+						// translators: %s: Horizontal direction of block movement ( left, right )
 						__( 'Move %s' ),
 						getMovementDirection(
 							direction,
