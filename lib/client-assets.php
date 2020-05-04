@@ -645,13 +645,11 @@ function gutenberg_extend_settings_block_patterns( $settings ) {
 	}
 
 	$settings['__experimentalBlockPatterns'] = array_merge(
-			gutenberg_load_block_pattern( 'cover-abc' ),
-			gutenberg_load_block_pattern( 'two-images' ),
-			gutenberg_load_block_pattern( 'features-services' ),
-		],
+		WP_Patterns_Registry::get_instance()->get_all_registered(),
 		$settings['__experimentalBlockPatterns']
 	);
 
+	return $settings;
 }
 add_filter( 'block_editor_settings', 'gutenberg_extend_settings_block_patterns', 0 );
 
