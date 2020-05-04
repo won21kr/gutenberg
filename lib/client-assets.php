@@ -674,13 +674,8 @@ add_filter( 'block_editor_settings', 'gutenberg_extend_settings_custom_line_heig
  *
  * @return array Filtered editor settings.
  */
-function gutenberg_extend_settings_block_patterns( $settings ) {
-	$block_patterns                          = [
-		gutenberg_load_block_pattern( 'teams' ),
-		gutenberg_load_block_pattern( 'testimonial' ),
-		gutenberg_load_block_pattern( 'pricing-table01' ),
-	];
-	$settings['__experimentalBlockPatterns'] = $block_patterns;
+function gutenberg_extend_settings_custom_units( $settings ) {
+	$settings['__experimentalDisableCustomUnits'] = get_theme_support( 'experimental-custom-units' );
 	return $settings;
 }
 add_filter( 'block_editor_settings', 'gutenberg_extend_settings_custom_units' );
@@ -688,6 +683,7 @@ add_filter( 'block_editor_settings', 'gutenberg_extend_settings_custom_units' );
 /*
  * Register default patterns if not registered in Core already.
  */
+
 if ( class_exists( 'WP_Block_Patterns_Registry' ) && ! WP_Block_Patterns_Registry::get_instance()->is_registered( 'text-two-columns' ) ) {
 	register_block_pattern( 'core/text-two-columns', gutenberg_load_block_pattern( 'text-two-columns' ) );
 	register_block_pattern( 'core/two-buttons', gutenberg_load_block_pattern( 'two-buttons' ) );
