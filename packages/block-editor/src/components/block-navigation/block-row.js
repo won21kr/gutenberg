@@ -67,7 +67,7 @@ export default function BlockNavigationBlockRow( {
 		>
 			<TreeGridCell
 				className="block-editor-block-navigation-row__select-cell"
-				colspan={ hasRenderedMovers ? undefined : 3 }
+				colSpan={ hasRenderedMovers ? undefined : 3 }
 			>
 				{ ( props ) => (
 					<div className="block-editor-block-navigation-row__select-container">
