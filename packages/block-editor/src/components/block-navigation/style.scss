@@ -22,6 +22,9 @@ $tree-item-height: 36px;
 }
 
 .block-editor-block-navigation-row {
+	// Use position relative for row animation.
+	position: relative;
+
 	.block-editor-block-navigation-row__select-button {
 		display: flex;
 		align-items: center;
@@ -37,7 +40,6 @@ $tree-item-height: 36px;
 		opacity: 1;
 		@include edit-post__fade-in-animation;
 	}
-
 
 	.block-editor-block-icon {
 		margin-right: 6px;
