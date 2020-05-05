@@ -471,6 +471,14 @@ _Returns_
 
 -   `Object`: Action object.
 
+<a name="deleteEntityRecord" href="#deleteEntityRecord">#</a> **deleteEntityRecord**
+
+Undocumented declaration.
+
+<a name="deleteEntityRecords" href="#deleteEntityRecords">#</a> **deleteEntityRecords**
+
+Undocumented declaration.
+
 <a name="editEntityRecord" href="#editEntityRecord">#</a> **editEntityRecord**
 
 Returns an action object that triggers an

@@ -6,11 +6,9 @@ import { isEqual, difference } from 'lodash';
 /**
  * WordPress dependencies
  */
-import apiFetch from '@wordpress/api-fetch';
 import { createBlock } from '@wordpress/blocks';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useState, useRef, useEffect } from '@wordpress/element';
-import { sprintf, __ } from '@wordpress/i18n';
 
 function createBlockFromMenuItem( menuItem ) {
 	return createBlock( 'core/navigation-link', {
@@ -27,33 +25,13 @@ function createMenuItemAttributesFromBlock( block ) {
 	};
 }
 
-async function deleteMenuItems( deletedClientIds, currentBlocks ) {
-	for ( const clientId of deletedClientIds ) {
-		const itemToDelete = currentBlocks[ clientId ];
-		await deleteMenuItem( itemToDelete.id );
-	}
-}
-
-async function deleteMenuItem( recordId ) {
-	const path = `${ '/__experimental/menu-items/' +
-		recordId +
-		'?force=true' }`;
-	const deletedRecord = await apiFetch( {
-		path,
-		method: 'DELETE',
-	} );
-	return deletedRecord.previous;
-}
-
 export default function useNavigationBlocks( menuId ) {
 	const menuItems = useSelect(
 		( select ) => select( 'core' ).getMenuItems( { menus: menuId } ),
 		[ menuId ]
 	);
 
-	const { createSuccessNotice } = useDispatch( 'core/notices' );
-
-	const { saveMenuItem } = useDispatch( 'core' );
+	const { saveMenuItem, deleteMenuItem } = useDispatch( 'core' );
 
 	const [ blocks, setBlocks ] = useState( [] );
 
@@ -69,9 +47,11 @@ export default function useNavigationBlocks( menuId ) {
 		const innerBlocks = [];
 
 		for ( const menuItem of menuItems ) {
-			const block = createBlockFromMenuItem( menuItem );
-			menuItemsRef.current[ block.clientId ] = menuItem;
-			innerBlocks.push( block );
+			if ( menuItem ) {
+				const block = createBlockFromMenuItem( menuItem );
+				menuItemsRef.current[ block.clientId ] = menuItem;
+				innerBlocks.push( block );
+			}
 		}
 
 		setBlocks( [ createBlock( 'core/navigation', {}, innerBlocks ) ] );
@@ -110,12 +90,21 @@ export default function useNavigationBlocks( menuId ) {
 			innerBlocks.map( ( block ) => block.clientId )
 		);
 
+		for ( const clientId of deletedClientIds ) {
+			const menuItem = menuItemsRef.current[ clientId ];
+			deleteMenuItem( menuItem.id );
+			saveMenuItem( {
+				...menuItem,
+			} );
+		}
+
+		/*
 		if ( deletedClientIds.length > 0 ) {
 			deleteMenuItems( deletedClientIds, menuItemsRef.current );
 
 			createSuccessNotice(
 				sprintf(
-					/* translators: %s: block pattern title. */
+					/* translators: %s: block pattern title. 
 					__( 'Deleted %s menu items.' ),
 					deletedClientIds.length
 				),
@@ -124,6 +113,7 @@ export default function useNavigationBlocks( menuId ) {
 				}
 			);
 		}
+		*/
 	};
 
 	return [ blocks, setBlocks, saveBlocks ];
