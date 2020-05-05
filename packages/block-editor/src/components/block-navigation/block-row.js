@@ -22,7 +22,7 @@ import { __ } from '@wordpress/i18n';
  */
 import BlockNavigationRow from './row';
 import BlockIcon from '../block-icon';
-import { MoveUpButton, MoveDownButton } from '../block-mover/mover-buttons';
+import { MoveUpButton, MoveDownButton } from '../block-mover/button';
 import DescenderLines from './descender-lines';
 
 export default function BlockNavigationBlockRow( {
