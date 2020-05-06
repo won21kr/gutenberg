@@ -5,6 +5,7 @@ import childProcess from 'child_process';
 import wd from 'wd';
 import crypto from 'crypto';
 import path from 'path';
+import fs from 'fs';
 
 /**
  * Internal dependencies
@@ -35,6 +36,7 @@ const localIOSAppPath = process.env.IOS_APP_PATH || defaultIOSAppPath;
 
 const localAppiumPort = serverConfigs.local.port; // Port to spawn appium process for local runs
 let appiumProcess;
+let iOSScreenRecordingProcess;
 
 // Used to map unicode and special values to keycodes on Android
 // Docs for keycode values: https://developer.android.com/reference/android/view/KeyEvent.html
@@ -52,6 +54,55 @@ const isAndroid = () => {
 const isLocalEnvironment = () => {
 	return testEnvironment.toLowerCase() === 'local';
 };
+
+const IOS_RECORDINGS_DIR = './ios-screen-recordings';
+
+const getiOSRecordingFileNameBase = ( testPath, id ) => {
+	const suiteName = path.basename( testPath, '.test.js' );
+	return `${ suiteName }.${ id }`;
+};
+
+jasmine.getEnv().addReporter( {
+	specStarted: ( result ) => {
+		const { testPath, id } = result;
+
+		if ( ! fs.existsSync( IOS_RECORDINGS_DIR ) ) {
+			fs.mkdirSync( IOS_RECORDINGS_DIR );
+		}
+
+		const fileName = getiOSRecordingFileNameBase( testPath, id ) + '.mov';
+
+		iOSScreenRecordingProcess = childProcess.spawn(
+			'xcrun',
+			[
+				'simctl',
+				'io',
+				'booted',
+				'recordVideo',
+				'--mask=black',
+				'--force',
+				fileName,
+			],
+			{
+				cwd: IOS_RECORDINGS_DIR,
+			}
+		);
+	},
+	specDone: ( result ) => {
+		iOSScreenRecordingProcess.kill( 'SIGINT' );
+
+		const { testPath, id, status } = result;
+
+		const fileNameBase = getiOSRecordingFileNameBase( testPath, id );
+
+		const oldPath = `${ IOS_RECORDINGS_DIR }/${ fileNameBase }.mov`;
+		const newPath = `${ IOS_RECORDINGS_DIR }/${ fileNameBase }.${ status }.mov`;
+
+		if ( fs.existsSync( oldPath ) ) {
+			fs.renameSync( oldPath, newPath );
+		}
+	},
+} );
 
 // Initialises the driver and desired capabilities for appium
 const setupDriver = async () => {
@@ -123,6 +174,7 @@ const setupDriver = async () => {
 	await timer( 3000 );
 
 	await driver.setOrientation( 'PORTRAIT' );
+
 	return driver;
 };
 
