@@ -22,7 +22,10 @@ import { __ } from '@wordpress/i18n';
  */
 import BlockNavigationRow from './row';
 import BlockIcon from '../block-icon';
-import { MoveUpButton, MoveDownButton } from '../block-mover/button';
+import {
+	BlockMoverUpButton,
+	BlockMoverDownButton,
+} from '../block-mover/button';
 import DescenderLines from './descender-lines';
 
 export default function BlockNavigationBlockRow( {
@@ -96,7 +99,7 @@ export default function BlockNavigationBlockRow( {
 				<>
 					<TreeGridCell className={ moverCellClassName }>
 						{ ( props ) => (
-							<MoveUpButton
+							<BlockMoverUpButton
 								__experimentalOrientation="vertical"
 								clientIds={ [ clientId ] }
 								{ ...props }
@@ -105,7 +108,7 @@ export default function BlockNavigationBlockRow( {
 					</TreeGridCell>
 					<TreeGridCell className={ moverCellClassName }>
 						{ ( props ) => (
-							<MoveDownButton
+							<BlockMoverDownButton
 								__experimentalOrientation="vertical"
 								clientIds={ [ clientId ] }
 								{ ...props }
