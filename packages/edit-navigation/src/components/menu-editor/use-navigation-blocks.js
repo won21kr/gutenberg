@@ -14,7 +14,6 @@ function createBlockFromMenuItem( menuItem ) {
 	return createBlock( 'core/navigation-link', {
 		label: menuItem.title.raw,
 		url: menuItem.url,
-		id: menuItem.id,
 	} );
 }
 
@@ -47,11 +46,9 @@ export default function useNavigationBlocks( menuId ) {
 		const innerBlocks = [];
 
 		for ( const menuItem of menuItems ) {
-			if ( menuItem ) {
-				const block = createBlockFromMenuItem( menuItem );
-				menuItemsRef.current[ block.clientId ] = menuItem;
-				innerBlocks.push( block );
-			}
+			const block = createBlockFromMenuItem( menuItem );
+			menuItemsRef.current[ block.clientId ] = menuItem;
+			innerBlocks.push( block );
 		}
 
 		setBlocks( [ createBlock( 'core/navigation', {}, innerBlocks ) ] );
@@ -59,6 +56,16 @@ export default function useNavigationBlocks( menuId ) {
 
 	const saveBlocks = () => {
 		const { innerBlocks } = blocks[ 0 ];
+
+		const deletedClientIds = difference(
+			Object.keys( menuItemsRef.current ),
+			innerBlocks.map( ( block ) => block.clientId )
+		);
+
+		for ( const clientId of deletedClientIds ) {
+			const menuItem = menuItemsRef.current[ clientId ];
+			deleteMenuItem( menuItem.id );
+		}
 
 		for ( const block of innerBlocks ) {
 			const menuItem = menuItemsRef.current[ block.clientId ];
@@ -84,36 +91,6 @@ export default function useNavigationBlocks( menuId ) {
 				} );
 			}
 		}
-
-		const deletedClientIds = difference(
-			Object.keys( menuItemsRef.current ),
-			innerBlocks.map( ( block ) => block.clientId )
-		);
-
-		for ( const clientId of deletedClientIds ) {
-			const menuItem = menuItemsRef.current[ clientId ];
-			deleteMenuItem( menuItem.id );
-			saveMenuItem( {
-				...menuItem,
-			} );
-		}
-
-		/*
-		if ( deletedClientIds.length > 0 ) {
-			deleteMenuItems( deletedClientIds, menuItemsRef.current );
-
-			createSuccessNotice(
-				sprintf(
-					/* translators: %s: block pattern title. 
-					__( 'Deleted %s menu items.' ),
-					deletedClientIds.length
-				),
-				{
-					type: 'snackbar',
-				}
-			);
-		}
-		*/
 	};
 
 	return [ blocks, setBlocks, saveBlocks ];

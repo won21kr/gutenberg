@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { keyBy, map, groupBy, flowRight, isEqual, get } from 'lodash';
+import { keyBy, pickBy, map, groupBy, flowRight, isEqual, get } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -165,6 +165,7 @@ export function themeSupports( state = {}, action ) {
  *  - Fetching
  *  - Editing
  *  - Saving
+ *  - Deleting
  *
  * @param {Object} entityConfig  Entity config.
  *
@@ -273,8 +274,20 @@ function entity( entityConfig ) {
 							},
 						};
 				}
+			},
 
-				return state;
+			removing: ( state = {}, action ) => {
+				switch ( action.type ) {
+					case 'REMOVE_ITEM':
+						return {
+							...state,
+							...pickBy(
+								state,
+								( value, itemId ) =>
+									! action.itemIds.includes( itemId )
+							),
+						};
+				}
 			},
 		} )
 	);
