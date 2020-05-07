@@ -91,9 +91,10 @@ function Navigation( {
 			return null;
 		}
 
-		return pages.map( ( { title, id } ) =>
+		return pages.map( ( { title, link: url, id } ) =>
 			createBlock( 'core/navigation-link', {
 				id,
+				url,
 				label: ! title.rendered
 					? __( '(no title)' )
 					: escape( title.rendered ),

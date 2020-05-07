@@ -249,9 +249,6 @@ function NavigationLinkEdit( {
 								} = {} ) =>
 									setAttributes( {
 										url: ( () => {
-											if ( id ) {
-												return undefined;
-											}
 											return encodeURI( newURL );
 										} )(),
 										label: ( () => {
