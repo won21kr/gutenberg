@@ -473,13 +473,11 @@ _Returns_
 
 <a name="deleteEntityRecord" href="#deleteEntityRecord">#</a> **deleteEntityRecord**
 
-Action triggered to delete an entity record.
+Undocumented declaration.
 
-_Parameters_
+<a name="deleteEntityRecords" href="#deleteEntityRecords">#</a> **deleteEntityRecords**
 
--   _kind_ `string`: Kind of the edited entity record.
--   _name_ `string`: Name of the edited entity record.
--   _recordId_ `number`: Record ID of the deleted entity record.
+Undocumented declaration.
 
 <a name="editEntityRecord" href="#editEntityRecord">#</a> **editEntityRecord**
 
