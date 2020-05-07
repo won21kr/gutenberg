@@ -256,6 +256,8 @@ describe( 'RichText', () => {
 	it( 'should handle Home and End keys', async () => {
 		await page.keyboard.press( 'Enter' );
 
+		await page.waitForSelector( '.wp-block[data-type="core/paragraph"]' );
+
 		await pressKeyWithModifier( 'primary', 'b' );
 		await page.keyboard.type( '12' );
 		await pressKeyWithModifier( 'primary', 'b' );
