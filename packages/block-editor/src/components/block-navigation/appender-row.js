@@ -24,8 +24,8 @@ export default function BlockNavigationAppenderRow( {
 	const descriptionId = `block-navigation-appender-row__description_${ instanceId }`;
 
 	const appenderPositionDescription = sprintf(
-		/* translators: 1: The numerical position of the block. 2: The total number of blocks. 3. The level of nesting for the block. */
-		__( 'Insert block at position %1$d, Level %2$d' ),
+		/* translators: 1: The numerical position of the block that will be inserted. 2: The level of nesting for the block that will be insterted. */
+		__( 'Add block at position %1$d, Level %2$d' ),
 		position,
 		level
 	);
