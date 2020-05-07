@@ -37,6 +37,7 @@ const localIOSAppPath = process.env.IOS_APP_PATH || defaultIOSAppPath;
 const localAppiumPort = serverConfigs.local.port; // Port to spawn appium process for local runs
 let appiumProcess;
 let iOSScreenRecordingProcess;
+let androidScreenRecordingProcess;
 
 // Used to map unicode and special values to keycodes on Android
 // Docs for keycode values: https://developer.android.com/reference/android/view/KeyEvent.html
@@ -56,21 +57,44 @@ const isLocalEnvironment = () => {
 };
 
 const IOS_RECORDINGS_DIR = './ios-screen-recordings';
+const ANDROID_RECORDINGS_DIR = './android-screen-recordings';
 
-const getiOSRecordingFileNameBase = ( testPath, id ) => {
+const getScreenRecordingFileNameBase = ( testPath, id ) => {
 	const suiteName = path.basename( testPath, '.test.js' );
 	return `${ suiteName }.${ id }`;
 };
 
 jasmine.getEnv().addReporter( {
-	specStarted: ( result ) => {
-		const { testPath, id } = result;
+	specStarted: ( { testPath, id } ) => {
+		const fileName =
+			getScreenRecordingFileNameBase( testPath, id ) + '.mp4';
+
+		if ( isAndroid() ) {
+			if ( ! fs.existsSync( ANDROID_RECORDINGS_DIR ) ) {
+				fs.mkdirSync( ANDROID_RECORDINGS_DIR );
+			}
+
+			androidScreenRecordingProcess = childProcess.spawn(
+				'adb',
+				[
+					'shell',
+					'screenrecord',
+					'--verbose',
+					'--bit-rate',
+					'4M',
+					`/sdcard/${ fileName }`,
+				],
+				{
+					cwd: ANDROID_RECORDINGS_DIR,
+				}
+			);
+
+			return;
+		}
 
 		if ( ! fs.existsSync( IOS_RECORDINGS_DIR ) ) {
 			fs.mkdirSync( IOS_RECORDINGS_DIR );
 		}
-
-		const fileName = getiOSRecordingFileNameBase( testPath, id ) + '.mov';
 
 		iOSScreenRecordingProcess = childProcess.spawn(
 			'xcrun',
@@ -88,15 +112,31 @@ jasmine.getEnv().addReporter( {
 			}
 		);
 	},
-	specDone: ( result ) => {
+	specDone: ( { testPath, id, status } ) => {
+		const fileNameBase = getScreenRecordingFileNameBase( testPath, id );
+
+		if ( isAndroid() ) {
+			androidScreenRecordingProcess.kill( 'SIGINT' );
+
+			childProcess.spawnSync(
+				'adb',
+				[ 'pull', `/sdcard/${ fileNameBase }.mp4`, '.' ],
+				{ cwd: ANDROID_RECORDINGS_DIR }
+			);
+
+			const oldPath = `${ ANDROID_RECORDINGS_DIR }/${ fileNameBase }.mp4`;
+			const newPath = `${ ANDROID_RECORDINGS_DIR }/${ fileNameBase }.${ status }.mp4`;
+
+			if ( fs.existsSync( oldPath ) ) {
+				fs.renameSync( oldPath, newPath );
+			}
+			return;
+		}
+
 		iOSScreenRecordingProcess.kill( 'SIGINT' );
 
-		const { testPath, id, status } = result;
-
-		const fileNameBase = getiOSRecordingFileNameBase( testPath, id );
-
-		const oldPath = `${ IOS_RECORDINGS_DIR }/${ fileNameBase }.mov`;
-		const newPath = `${ IOS_RECORDINGS_DIR }/${ fileNameBase }.${ status }.mov`;
+		const oldPath = `${ IOS_RECORDINGS_DIR }/${ fileNameBase }.mp4`;
+		const newPath = `${ IOS_RECORDINGS_DIR }/${ fileNameBase }.${ status }.mp4`;
 
 		if ( fs.existsSync( oldPath ) ) {
 			fs.renameSync( oldPath, newPath );
