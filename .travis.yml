@@ -14,6 +14,7 @@ cache:
     - $HOME/.jest-cache
     - $HOME/.npm
     - $HOME/.nvm/.cache
+    - feat/import-gutenberg-mobile-no-squash
 
 branches:
   only:
